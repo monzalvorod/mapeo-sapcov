@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Archivos - SAPCOV</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto py-6 px-4">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Gestión de Archivos</h1>
+        <p class="text-gray-600" id="adminInfo">Usuario Administrador</p>
+      </div>
+      
+      <div class="mt-4 md:mt-0 flex">
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 flex items-center">
+          <i class="fas fa-download mr-2"></i>
+          Exportar Lista de Archivos
+        </button>
+      </div>
+    </div>
+    
+    <!-- File Manager Interface -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <!-- Left Sidebar - Filters and Navigation -->
+      <div class="bg-white rounded-card shadow-sm p-6">
+        <h2 class="text-lg font-bold text-gray-800 mb-4">Filtros</h2>
+        
+        <!-- File Type Filter -->
+        <div class="mb-6">
+          <h3 class="text-sm font-medium text-gray-700 mb-2">Tipo de Archivo</h3>
+          <div class="space-y-2">
+            <label class="flex items-center">
+              <input type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" checked>
+              <span class="ml-2 text-sm text-gray-700">Todos los Archivos</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+              <span class="ml-2 text-sm text-gray-700">Documentos (.pdf, .doc)</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+              <span class="ml-2 text-sm text-gray-700">Imágenes (.jpg, .png)</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+              <span class="ml-2 text-sm text-gray-700">Hojas de Cálculo (.xls, .csv)</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+              <span class="ml-2 text-sm text-gray-700">Otros</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Implementation Step Filter -->
+        <div class="mb-6">
+          <h3 class="text-sm font-medium text-gray-700 mb-2">Paso de Implementación</h3>
+          <select class="w-full bg-gray-50 border border-gray-300 text-gray-700 py-2 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+            <option value="">Todos los Pasos</option>
+            <option value="1">Presentación del Proyecto</option>
+            <option value="2">Recursos de lista de verificación</option>
+            <option value="3">Firma de acuerdo y plan de trabajo</option>
+            <option value="4">Adaptación de salas para niños</option>
+            <option value="5">Capacitación</option>
+            <option value="6">Monitoreo</option>
+            <option value="7">Obligatorio</option>
+            <option value="8">Base de datos para evaluación</option>
+          </select>
+        </div>
+        
+        <!-- Court/State Filter -->
+        <div class="mb-6">
+          <h3 class="text-sm font-medium text-gray-700 mb-2">Juzgado/Estado</h3>
+          <select class="w-full bg-gray-50 border border-gray-300 text-gray-700 py-2 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+            <option value="">Todos los Estados</option>
+            <option value="Aguascalientes">Aguascalientes</option>
+            <option value="Baja California">Baja California</option>
+            <option value="Baja California Sur">Baja California Sur</option>
+            <option value="Campeche">Campeche</option>
+            <option value="Chiapas">Chiapas</option>
+            <option value="Chihuahua">Chihuahua</option>
+            <option value="Coahuila">Coahuila</option>
+            <option value="Colima">Colima</option>
+            <option value="Durango">Durango</option>
+            <option value="Guanajuato">Guanajuato</option>
+            <!-- More states would be listed here -->
+          </select>
+        </div>
+        
+        <!-- Date Range Filter -->
+        <div class="mb-6">
+          <h3 class="text-sm font-medium text-gray-700 mb-2">Fecha de Subida</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-xs text-gray-500 mb-1">Desde</label>
+              <input type="date" class="w-full bg-gray-50 border border-gray-300 text-gray-700 py-1.5 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+            </div>
+            <div>
+              <label class="block text-xs text-gray-500 mb-1">Hasta</label>
+              <input type="date" class="w-full bg-gray-50 border border-gray-300 text-gray-700 py-1.5 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Apply Filters Button -->
+        <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+          <i class="fas fa-filter mr-2"></i>
+          Aplicar Filtros
+        </button>
+        <button class="w-full mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition flex items-center justify-center">
+          <i class="fas fa-redo-alt mr-2"></i>
+          Restablecer Filtros
+        </button>
+      </div>
+      
+      <!-- Main Content - Files List -->
+      <div class="lg:col-span-3">
+        <!-- Search and View Controls -->
+        <div class="bg-white rounded-card shadow-sm p-4 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div class="relative w-full md:w-96 mb-4 md:mb-0">
+              <input type="text" placeholder="Buscar archivos..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+              <div class="flex border border-gray-300 rounded-lg overflow-hidden">
+                <button class="px-3 py-2 bg-blue-600 text-white hover:bg-blue-700">
+                  <i class="fas fa-th-large"></i>
+                </button>
+                <button class="px-3 py-2 bg-white text-gray-600 hover:bg-gray-100">
+                  <i class="fas fa-list"></i>
+                </button>
+              </div>
+              
+              <select class="bg-gray-50 border border-gray-300 text-gray-700 py-2 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                <option>Más Recientes Primero</option>
+                <option>Más Antiguos Primero</option>
+                <option>A a Z</option>
+                <option>Z a A</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Files Grid View -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="filesGrid">
+          <!-- File Card 1 -->
+          <div class="bg-white rounded-card shadow-sm overflow-hidden hover:shadow-md transition">
+            <div class="p-4 border-b border-gray-100">
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center mr-3 flex-shrink-0">
+                    <i class="fas fa-file-pdf text-red-600"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-medium text-gray-800 mb-1">Meeting_Minutes_Jalisco.pdf</h3>
+                    <p class="text-xs text-gray-500">2.4 MB • Documento PDF</p>
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="px-4 py-3 bg-gray-50">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center">
+                  <span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Jalisco</span>
+                  <span class="text-xs text-gray-500 ml-2">Paso 1.6</span>
+                </div>
+                <span class="text-xs text-gray-500">hace 2 horas</span>
+              </div>
+              
+              <div class="flex items-center text-sm">
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-eye"></i>
+                </span>
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-download"></i>
+                </span>
+                <span class="text-gray-500">
+                  <i class="fas fa-share-alt"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- File Card 2 -->
+          <div class="bg-white rounded-card shadow-sm overflow-hidden hover:shadow-md transition">
+            <div class="p-4 border-b border-gray-100">
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center mr-3 flex-shrink-0">
+                    <i class="fas fa-file-excel text-green-600"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-medium text-gray-800 mb-1">Resources_Checklist_Chihuahua.xlsx</h3>
+                    <p class="text-xs text-gray-500">1.8 MB • Hoja de Cálculo Excel</p>
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="px-4 py-3 bg-gray-50">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center">
+                  <span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Chihuahua</span>
+                  <span class="text-xs text-gray-500 ml-2">Paso 2.3</span>
+                </div>
+                <span class="text-xs text-gray-500">Ayer</span>
+              </div>
+              
+              <div class="flex items-center text-sm">
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-eye"></i>
+                </span>
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-download"></i>
+                </span>
+                <span class="text-gray-500">
+                  <i class="fas fa-share-alt"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- File Card 3 -->
+          <div class="bg-white rounded-card shadow-sm overflow-hidden hover:shadow-md transition">
+            <div class="p-4 border-b border-gray-100">
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mr-3 flex-shrink-0">
+                    <i class="fas fa-file-word text-blue-600"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-medium text-gray-800 mb-1">Agreement_Draft_Sonora.docx</h3>
+                    <p class="text-xs text-gray-500">895 KB • Word Document</p>
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="px-4 py-3 bg-gray-50">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center">
+                  <span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Sonora</span>
+                  <span class="text-xs text-gray-500 ml-2">Step 3.1</span>
+                </div>
+                <span class="text-xs text-gray-500">2 days ago</span>
+              </div>
+              
+              <div class="flex items-center text-sm">
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-eye"></i>
+                </span>
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-download"></i>
+                </span>
+                <span class="text-gray-500">
+                  <i class="fas fa-share-alt"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- File Card 4 -->
+          <div class="bg-white rounded-card shadow-sm overflow-hidden hover:shadow-md transition">
+            <div class="p-4 border-b border-gray-100">
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center mr-3 flex-shrink-0">
+                    <i class="fas fa-file-image text-purple-600"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-medium text-gray-800 mb-1">Courtroom_Photo_Nuevo_Leon.jpg</h3>
+                    <p class="text-xs text-gray-500">3.2 MB • JPEG Image</p>
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="px-4 py-3 bg-gray-50">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center">
+                  <span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Nuevo León</span>
+                  <span class="text-xs text-gray-500 ml-2">Step 4.1</span>
+                </div>
+                <span class="text-xs text-gray-500">3 days ago</span>
+              </div>
+              
+              <div class="flex items-center text-sm">
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-eye"></i>
+                </span>
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-download"></i>
+                </span>
+                <span class="text-gray-500">
+                  <i class="fas fa-share-alt"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- File Card 5 -->
+          <div class="bg-white rounded-card shadow-sm overflow-hidden hover:shadow-md transition">
+            <div class="p-4 border-b border-gray-100">
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center mr-3 flex-shrink-0">
+                    <i class="fas fa-file-pdf text-red-600"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-medium text-gray-800 mb-1">Training_Materials_Puebla.pdf</h3>
+                    <p class="text-xs text-gray-500">5.7 MB • PDF Document</p>
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="px-4 py-3 bg-gray-50">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center">
+                  <span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Puebla</span>
+                  <span class="text-xs text-gray-500 ml-2">Step 5.1</span>
+                </div>
+                <span class="text-xs text-gray-500">4 days ago</span>
+              </div>
+              
+              <div class="flex items-center text-sm">
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-eye"></i>
+                </span>
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-download"></i>
+                </span>
+                <span class="text-gray-500">
+                  <i class="fas fa-share-alt"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- File Card 6 -->
+          <div class="bg-white rounded-card shadow-sm overflow-hidden hover:shadow-md transition">
+            <div class="p-4 border-b border-gray-100">
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <div class="w-10 h-10 rounded-lg bg-yellow-100 flex items-center justify-center mr-3 flex-shrink-0">
+                    <i class="fas fa-file-alt text-yellow-600"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-medium text-gray-800 mb-1">Monitoring_Report_Yucatan.txt</h3>
+                    <p class="text-xs text-gray-500">128 KB • Text Document</p>
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="px-4 py-3 bg-gray-50">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center">
+                  <span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Yucatán</span>
+                  <span class="text-xs text-gray-500 ml-2">Step 6.3</span>
+                </div>
+                <span class="text-xs text-gray-500">1 week ago</span>
+              </div>
+              
+              <div class="flex items-center text-sm">
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-eye"></i>
+                </span>
+                <span class="text-gray-500 mr-3">
+                  <i class="fas fa-download"></i>
+                </span>
+                <span class="text-gray-500">
+                  <i class="fas fa-share-alt"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="mt-6 flex justify-between items-center">
+          <div class="text-sm text-gray-500">
+            Showing <span class="font-medium">6</span> of <span class="font-medium">287</span> files
+          </div>
+          <div class="flex space-x-2">
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-600 hover:bg-gray-50">
+              Previous
+            </button>
+            <button class="px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
+              1
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-600 hover:bg-gray-50">
+              2
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-600 hover:bg-gray-50">
+              3
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-600 hover:bg-gray-50">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get parent window's app API
+      const appAPI = window.parent.appAPI;
+      const user = appAPI.getUserData();
+      
+      // Set admin info
+      document.getElementById('adminInfo').textContent = `${user.role === 'unicef_admin' ? 'UNICEF' : 'ODI'} Administrator`;
+      
+      // For a full implementation, we would fetch the files from a database
+      // and populate the files grid dynamically based on filters.
+      // For this prototype, we're using static HTML.
+    });
+  </script>
+</body>
+</html> 

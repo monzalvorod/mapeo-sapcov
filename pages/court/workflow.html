@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flujo de Tareas - SAPCOV</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto py-6 px-4">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Flujo de Implementación SAPCOV</h1>
+        <p class="text-gray-600" id="courtName">Nombre del Juzgado Estatal</p>
+      </div>
+      <div class="flex items-center">
+        <div class="mr-4">
+          <span class="text-sm text-gray-500">Progreso General</span>
+          <div class="flex items-center mt-1">
+            <div class="w-48 h-3 bg-gray-200 rounded-full mr-2">
+              <div id="overallProgressBar" class="h-3 bg-blue-600 rounded-full" style="width: 25%"></div>
+            </div>
+            <span id="overallProgressText" class="text-sm font-medium">25%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Workflow Steps Indicator -->
+    <div class="step-indicator mb-8 overflow-x-auto pb-4">
+      <!-- Steps will be populated dynamically -->
+    </div>
+    
+    <!-- Current Task Card -->
+    <div id="currentTaskCard" class="bg-white rounded-card p-6 mb-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <div>
+          <h2 id="currentStepTitle" class="text-xl font-bold text-gray-800">Cargando...</h2>
+          <p id="currentStepDescription" class="text-gray-600">Por favor espera mientras cargamos tu tarea actual.</p>
+        </div>
+        <div class="mt-4 md:mt-0">
+          <div class="flex items-center">
+            <span class="text-sm text-gray-500 mr-2">Progreso del Paso:</span>
+            <div class="w-32 h-2 bg-gray-200 rounded-full mr-2">
+              <div id="currentStepProgressBar" class="h-2 bg-green-500 rounded-full" style="width: 0%"></div>
+            </div>
+            <span id="currentStepProgressText" class="text-sm font-medium">0%</span>
+          </div>
+        </div>
+      </div>
+      
+      <div id="tasksList" class="space-y-4">
+        <!-- Tasks will be populated dynamically -->
+      </div>
+    </div>
+    
+    <!-- Activity Timeline -->
+    <div class="bg-white rounded-card p-6">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">Actividad Reciente</h3>
+      
+      <div class="flow-root">
+        <ul class="timeline -mb-8">
+          <li class="timeline-item">
+            <div class="timeline-marker bg-blue-500"></div>
+            <div class="timeline-content">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h4 class="text-base font-medium">Archivo subido: Acta de Reunión</h4>
+                  <p class="text-sm text-gray-600">Has subido el acta de la reunión para Presentación del Proyecto</p>
+                </div>
+                <span class="text-xs text-gray-500">2 horas ago</span>
+              </div>
+            </div>
+          </li>
+          
+          <li class="timeline-item">
+            <div class="timeline-marker bg-green-500"></div>
+            <div class="timeline-content">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h4 class="text-base font-medium">Paso completado: Reuniones de recursos en sitio</h4>
+                  <p class="text-sm text-gray-600">Has completado todas las tareas requeridas para este paso.</p>
+                </div>
+                <span class="text-xs text-gray-500">Ayer</span>
+              </div>
+            </div>
+          </li>
+          
+          <li class="timeline-item">
+            <div class="timeline-marker bg-blue-500"></div>
+            <div class="timeline-content">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h4 class="text-base font-medium">Archivo subido: Lista de Recursos</h4>
+                  <p class="text-sm text-gray-600">Has subido el documento de lista de recursos</p>
+                </div>
+                <span class="text-xs text-gray-500">2 días ago</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <!-- File Upload Modal -->
+  <div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg max-w-md w-full p-6 relative">
+      <button id="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <h3 class="text-xl font-bold text-gray-800 mb-4" id="modalTaskTitle">Subir Archivo</h3>
+      
+      <div class="file-card mb-4">
+        <input type="file" id="fileInput" class="hidden">
+        <label for="fileInput" class="cursor-pointer flex flex-col items-center justify-center">
+          <i class="fas fa-cloud-upload-alt text-3xl text-blue-500 mb-2"></i>
+          <p class="text-sm text-gray-600 mb-1">Arrastra y suelta archivos aquí, o</p>
+          <span class="text-blue-600 font-medium">Buscar Archivos</span>
+        </label>
+      </div>
+      
+      <div id="filePreview" class="hidden mb-4 p-3 bg-gray-50 rounded border border-gray-200">
+        <div class="flex items-center">
+          <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
+          <div class="flex-grow">
+            <p id="fileName" class="text-sm font-medium truncate">document.pdf</p>
+            <p id="fileSize" class="text-xs text-gray-500">2.4 MB</p>
+          </div>
+          <button id="removeFile" class="text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="flex justify-end space-x-3">
+        <button id="cancelUpload" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+          Cancelar
+        </button>
+        <button id="submitUpload" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50" disabled>
+          Subir Archivo
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    /* Timeline Styles */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    
+    .timeline-item {
+      position: relative;
+      padding-bottom: 2rem;
+    }
+    
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+    
+    .timeline:before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      height: 100%;
+      width: 2px;
+      background-color: #e5e7eb;
+    }
+    
+    .timeline-marker {
+      position: absolute;
+      left: -2rem;
+      top: 0.25rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+    }
+  </style>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get parent window's app API
+      const appAPI = window.parent.appAPI;
+      const user = appAPI.getUserData();
+      const workflowSteps = appAPI.getWorkflowSteps();
+      const stateProgress = appAPI.getStateProgress();
+      
+      // Set court name
+      document.getElementById('courtName').textContent = user.courtName || 'Nombre del Juzgado Estatal';
+      
+      // Find court progress
+      const courtProgress = stateProgress.find(state => state.state === user.state) || {
+        state: user.state,
+        currentStep: 1,
+        stepProgress: { 1: 30 },
+        overall: 5
+      };
+      
+      // Set overall progress
+      document.getElementById('overallProgressBar').style.width = `${courtProgress.overall}%`;
+      document.getElementById('overallProgressText').textContent = `${courtProgress.overall}%`;
+      
+      // Populate step indicator
+      const stepIndicator = document.querySelector('.step-indicator');
+      workflowSteps.forEach((step, index) => {
+        const stepId = index + 1;
+        const isActive = stepId === courtProgress.currentStep;
+        const isCompleted = stepId < courtProgress.currentStep;
+        const isLocked = stepId > courtProgress.currentStep;
+        
+        const stepElement = document.createElement('div');
+        stepElement.className = `step ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
+        
+        const stepHtml = `
+          <div class="step-circle">
+            ${isCompleted ? '<i class="fas fa-check"></i>' : (isLocked ? '<i class="fas fa-lock"></i>' : stepId)}
+          </div>
+          <div class="step-title">${step.title}</div>
+          ${index < workflowSteps.length - 1 ? '<div class="step-line"></div>' : ''}
+        `;
+        
+        stepElement.innerHTML = stepHtml;
+        stepIndicator.appendChild(stepElement);
+      });
+      
+      // Set current step details
+      const currentStep = workflowSteps[courtProgress.currentStep - 1];
+      document.getElementById('currentStepTitle').textContent = currentStep.title;
+      document.getElementById('currentStepDescription').textContent = `Completa las siguientes tareas para avanzar al siguiente paso.`;
+      
+      // Set current step progress
+      const currentStepProgress = courtProgress.stepProgress[courtProgress.currentStep] || 0;
+      document.getElementById('currentStepProgressBar').style.width = `${currentStepProgress}%`;
+      document.getElementById('currentStepProgressText').textContent = `${currentStepProgress}%`;
+      
+      // Populate tasks list
+      const tasksList = document.getElementById('tasksList');
+      currentStep.tasks.forEach(task => {
+        // For demo purposes, randomly mark some tasks as completed
+        const isCompleted = Math.random() > 0.7;
+        
+        const taskElement = document.createElement('div');
+        taskElement.className = 'task-item bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition';
+        
+        const taskHtml = `
+          <div class="flex items-start justify-between">
+            <div class="flex items-start">
+              <div class="h-6 w-6 rounded-full flex items-center justify-center mr-3 ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200'}">
+                ${isCompleted ? '<i class="fas fa-check text-xs"></i>' : ''}
+              </div>
+              <div>
+                <h4 class="text-base font-medium">${task.title}</h4>
+                <p class="text-sm text-gray-600 mb-2">Upload required documentation for this task.</p>
+                ${isCompleted ? `
+                  <div class="flex items-center text-green-600 text-sm">
+                    <i class="fas fa-check-circle mr-1"></i>
+                    <span>Completed</span>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+            
+            <button class="upload-btn text-sm px-3 py-1 rounded-md ${isCompleted ? 'bg-gray-200 text-gray-700' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}"
+                    data-task-id="${task.id}" data-task-title="${task.title}" ${isCompleted ? 'disabled' : ''}>
+              ${isCompleted ? 'Uploaded' : 'Upload File'}
+            </button>
+          </div>
+        `;
+        
+        taskElement.innerHTML = taskHtml;
+        tasksList.appendChild(taskElement);
+      });
+      
+      // Upload modal functionality
+      const uploadModal = document.getElementById('uploadModal');
+      const modalTaskTitle = document.getElementById('modalTaskTitle');
+      const fileInput = document.getElementById('fileInput');
+      const filePreview = document.getElementById('filePreview');
+      const fileName = document.getElementById('fileName');
+      const fileSize = document.getElementById('fileSize');
+      const submitUpload = document.getElementById('submitUpload');
+      
+      // Open modal when upload button is clicked
+      document.querySelectorAll('.upload-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          modalTaskTitle.textContent = `Upload File: ${btn.dataset.taskTitle}`;
+          uploadModal.classList.remove('hidden');
+          uploadModal.dataset.taskId = btn.dataset.taskId;
+        });
+      });
+      
+      // Close modal
+      document.getElementById('closeModal').addEventListener('click', () => {
+        uploadModal.classList.add('hidden');
+      });
+      
+      document.getElementById('cancelUpload').addEventListener('click', () => {
+        uploadModal.classList.add('hidden');
+      });
+      
+      // File input change
+      fileInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (file) {
+          fileName.textContent = file.name;
+          fileSize.textContent = formatFileSize(file.size);
+          filePreview.classList.remove('hidden');
+          submitUpload.disabled = false;
+        }
+      });
+      
+      // Remove file
+      document.getElementById('removeFile').addEventListener('click', () => {
+        fileInput.value = '';
+        filePreview.classList.add('hidden');
+        submitUpload.disabled = true;
+      });
+      
+      // Submit upload
+      submitUpload.addEventListener('click', () => {
+        const taskId = uploadModal.dataset.taskId;
+        // In a real app, this would upload the file to the server
+        
+        // Simulate successful upload
+        alert(`File uploaded successfully for task ${taskId}`);
+        
+        // Close modal
+        uploadModal.classList.add('hidden');
+        
+        // Update UI to show task completed
+        document.querySelectorAll('.upload-btn').forEach(btn => {
+          if (btn.dataset.taskId === taskId) {
+            const taskItem = btn.closest('.task-item');
+            const statusIcon = taskItem.querySelector('.h-6.w-6');
+            
+            // Update button
+            btn.textContent = 'Uploaded';
+            btn.classList.remove('bg-blue-100', 'text-blue-700', 'hover:bg-blue-200');
+            btn.classList.add('bg-gray-200', 'text-gray-700');
+            btn.disabled = true;
+            
+            // Update status icon
+            statusIcon.classList.remove('bg-gray-200');
+            statusIcon.classList.add('bg-green-500', 'text-white');
+            statusIcon.innerHTML = '<i class="fas fa-check text-xs"></i>';
+            
+            // Add completed text
+            const taskContent = btn.previousElementSibling;
+            const completedText = document.createElement('div');
+            completedText.className = 'flex items-center text-green-600 text-sm';
+            completedText.innerHTML = '<i class="fas fa-check-circle mr-1"></i><span>Completed</span>';
+            taskContent.querySelector('p').after(completedText);
+            
+            // Update progress
+            const currentStepProgress = parseInt(document.getElementById('currentStepProgressText').textContent) + 15;
+            document.getElementById('currentStepProgressBar').style.width = `${currentStepProgress}%`;
+            document.getElementById('currentStepProgressText').textContent = `${currentStepProgress}%`;
+            
+            const overallProgress = parseInt(document.getElementById('overallProgressText').textContent) + 2;
+            document.getElementById('overallProgressBar').style.width = `${overallProgress}%`;
+            document.getElementById('overallProgressText').textContent = `${overallProgress}%`;
+          }
+        });
+      });
+      
+      // Utility function to format file size
+      function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        else return (bytes / 1048576).toFixed(1) + ' MB';
+      }
+    });
+  </script>
+</body>
+</html> 

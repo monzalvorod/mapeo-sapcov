@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <style>
+    .logo-text { font-family: Arial, sans-serif; font-weight: bold; }
+    .logo-text-main { font-size: 28px; }
+    .logo-text-sub { font-size: 14px; }
+  </style>
+  <rect x="5" y="10" width="40" height="40" rx="5" fill="#1e40af"/>
+  <path d="M25 20 L35 35 L15 35 Z" fill="white"/>
+  <path d="M25 25 L15 15 L35 15 Z" fill="white" opacity="0.6"/>
+  <text x="55" y="35" class="logo-text logo-text-main" fill="#1e40af">SAPCOV</text>
+  <text x="55" y="50" class="logo-text logo-text-sub" fill="#4b5563">File Management System</text>
+</svg> 

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión - Sistema de Gestión de Archivos SAPCOV</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center p-4">
+  <div class="flex flex-col md:flex-row rounded-card overflow-hidden max-w-5xl w-full shadow-xl bg-white">
+    <!-- Left side - Image/Logo -->
+    <div class="w-full md:w-1/2 bg-blue-700 text-white p-8 flex flex-col justify-between">
+      <div>
+        <h1 class="text-3xl font-bold mb-3">Gestión de Archivos SAPCOV</h1>
+        <p class="mb-6 opacity-90">Un sistema colaborativo de UNICEF y ODI para establecer juzgados especializados en menores en todos los estados.</p>
+        
+        <div class="rounded-lg bg-blue-800 p-4 mb-6">
+          <h3 class="font-bold mb-2 text-lg">Sobre SAPCOV</h3>
+          <p class="text-sm opacity-90">SAPCOV (La Sala de Audiencias para Personas en Condición de Vulnerabilidad) es una iniciativa para crear juzgados especializados en menores en todos los estados, garantizando la protección legal adecuada para los menores.</p>
+        </div>
+      </div>
+      
+      <div class="mt-auto flex flex-col">
+        <div class="flex items-center mb-4">
+          <img src="img/unicef.png" alt="UNICEF Logo" class="h-10 bg-white p-1 rounded mr-3">
+          <span class="font-bold text-xl">UNICEF</span>
+        </div>
+        <div class="flex items-center">
+          <div class="h-10 w-10 bg-white rounded flex items-center justify-center text-blue-700 font-bold mr-3">ODI</div>
+          <span class="font-bold text-xl">ODI Partnership</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right side - Login form -->
+    <div class="w-full md:w-1/2 p-8">
+      <div class="mb-8 text-center">
+        <h2 class="text-2xl font-bold text-gray-800 mb-1">Bienvenido de nuevo</h2>
+        <p class="text-gray-600">Por favor, inicia sesión en tu cuenta</p>
+      </div>
+      
+      <form id="loginForm" class="mb-6">
+        <div class="mb-4">
+          <label for="username" class="block text-gray-700 font-medium mb-2">Correo electrónico o usuario</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+              <i class="fas fa-user"></i>
+            </span>
+            <input type="text" id="username" class="w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 pl-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Introduce tu usuario">
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          <div class="flex justify-between mb-2">
+            <label for="password" class="block text-gray-700 font-medium">Contraseña</label>
+            <a href="#" class="text-sm text-blue-600 hover:underline">¿Olvidaste tu contraseña?</a>
+          </div>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+              <i class="fas fa-lock"></i>
+            </span>
+            <input type="password" id="password" class="w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 pl-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Introduce tu contraseña">
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center">
+            <input type="checkbox" id="remember" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+            <label for="remember" class="ml-2 block text-sm text-gray-700">Recuérdame</label>
+          </div>
+          
+          <div>
+            <select id="userType" class="text-sm bg-gray-50 border border-gray-300 text-gray-700 py-2 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="court">Usuario de Juzgado</option>
+              <option value="unicef_admin">Administrador UNICEF</option>
+              <option value="odi_admin">Administrador ODI</option>
+            </select>
+          </div>
+        </div>
+        
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition shadow-md flex items-center justify-center">
+          <i class="fas fa-sign-in-alt mr-2"></i>
+          Iniciar sesión
+        </button>
+      </form>
+      
+      <div class="text-center">
+        <p class="text-sm text-gray-600">
+          Este es un sistema seguro. El acceso no autorizado está prohibido y puede estar sujeto a acciones legales.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('loginForm');
+      const usernameInput = document.getElementById('username');
+      const userTypeSelect = document.getElementById('userType');
+      
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // For demo purposes, create a user object based on the selected type
+        const userType = userTypeSelect.value;
+        let user = {
+          id: 'user123',
+          name: usernameInput.value || 'Usuario de Demostración', 
+          role: userType
+        };
+        
+        // Add some role-specific properties
+        if (userType === 'court') {
+          user.state = 'Jalisco';
+          user.courtName = 'Juzgado del Estado de Jalisco';
+        }
+        
+        // Send message to parent window
+        window.parent.postMessage({
+          type: 'LOGIN_SUCCESS',
+          data: { user }
+        }, '*');
+      });
+    });
+  </script>
+</body>
+</html>

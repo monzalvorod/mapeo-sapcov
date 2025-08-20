@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Court Profile - SAPCOV</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto py-6 px-4">
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold text-gray-800">Perfil del Juzgado</h1>
+      <p class="text-gray-600" id="courtName">Nombre del Juzgado Estatal</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Court Info Card -->
+      <div class="bg-white rounded-card shadow-sm p-6">
+        <div class="text-center mb-6">
+          <div class="mx-auto w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-gavel text-blue-600 text-3xl"></i>
+          </div>
+          <h2 id="courtTitle" class="text-xl font-bold text-gray-800">Juzgado del Estado de Jalisco</h2>
+          <p id="courtLocation" class="text-gray-600">Guadalajara, Jalisco</p>
+        </div>
+        
+        <div class="border-t border-gray-200 pt-4">
+          <div class="mb-4">
+            <h3 class="text-sm font-medium text-gray-500 mb-1">ID del Juzgado</h3>
+            <p id="courtId" class="text-base font-semibold">MEX-JAL-001</p>
+          </div>
+          
+          <div class="mb-4">
+            <h3 class="text-sm font-medium text-gray-500 mb-1">Fecha de Registro</h3>
+            <p id="registrationDate" class="text-base font-semibold">15 de marzo de 2025</p>
+          </div>
+          
+          <div class="mb-4">
+            <h3 class="text-sm font-medium text-gray-500 mb-1">Estado de SAPCOV</h3>
+            <p class="flex items-center">
+              <span id="courtStatus" class="inline-flex px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 font-medium">
+                En Progreso
+              </span>
+            </p>
+          </div>
+          
+          <div>
+            <h3 class="text-sm font-medium text-gray-500 mb-1">Administrador del Juzgado</h3>
+            <div class="flex items-center">
+              <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-user text-gray-500"></i>
+              </div>
+              <div>
+                <p id="adminName" class="text-sm font-medium">Judge Maria Lopez</p>
+                <p id="adminEmail" class="text-xs text-gray-500">mlopez@jalisco.courts.mx</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Court Progress Card -->
+      <div class="bg-white rounded-card shadow-sm p-6 md:col-span-2">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Progreso de Implementación</h2>
+        
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h3 class="text-sm font-medium text-gray-500 mb-1">Paso Actual</h3>
+            <p id="currentStep" class="text-lg font-bold text-blue-600">Scouting checklist resources</p>
+            <p id="currentStepNumber" class="text-sm text-gray-500">Paso 2 de 8</p>
+          </div>
+          
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h3 class="text-sm font-medium text-gray-500 mb-1">Progreso General</h3>
+            <div class="flex items-center">
+              <div class="w-full h-3 bg-gray-200 rounded-full mr-2">
+                <div id="overallProgressBar" class="h-3 bg-blue-600 rounded-full" style="width: 25%"></div>
+              </div>
+              <span id="overallProgressText" class="text-sm font-bold ml-2">25%</span>
+            </div>
+            <p class="text-sm text-gray-500 mt-1">Finalización estimada: 4T 2025</p>
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          <h3 class="text-base font-medium text-gray-800 mb-3">Finalización de Pasos</h3>
+          <div id="stepsProgress" class="space-y-3">
+            <!-- Steps will be populated dynamically -->
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-base font-medium text-gray-800 mb-3">Actividad Reciente</h3>
+          <div class="space-y-3">
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                <i class="fas fa-file-upload text-blue-600 text-sm"></i>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium">Archivo subido: Acta de Reunión</p>
+                <p class="text-xs text-gray-500">2 hours ago</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
+                <i class="fas fa-check text-green-600 text-sm"></i>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium">Tarea completada: Reuniones de recursos en sitio</p>
+                <p class="text-xs text-gray-500">Yesterday</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                <i class="fas fa-file-upload text-blue-600 text-sm"></i>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium">Archivo subido: Lista de Recursos</p>
+                <p class="text-xs text-gray-500">2 days ago</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Court Team -->
+      <div class="bg-white rounded-card shadow-sm p-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Equipo del Juzgado</h2>
+        
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+              <i class="fas fa-user text-blue-600"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium">Judge Maria Lopez</p>
+              <p class="text-xs text-gray-500">Administrador del Juzgado</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+              <i class="fas fa-user text-blue-600"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium">Carlos Ramirez</p>
+              <p class="text-xs text-gray-500">Coordinador Técnico</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+              <i class="fas fa-user text-blue-600"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium">Ana Gonzalez</p>
+              <p class="text-xs text-gray-500">Psicólogo Infantil</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+              <i class="fas fa-user text-blue-600"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium">Roberto Sanchez</p>
+              <p class="text-xs text-gray-500">Asesor Legal</p>
+            </div>
+          </div>
+        </div>
+        
+        <button class="mt-4 w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition flex items-center justify-center">
+          <i class="fas fa-user-plus mr-2"></i>
+          <span>Agregar Miembro al Equipo</span>
+        </button>
+      </div>
+      
+      <!-- Contact Information -->
+      <div class="bg-white rounded-card shadow-sm p-6 md:col-span-2">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Información de Contacto</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-base font-medium text-gray-700 mb-3">Dirección del Juzgado</h3>
+            <p class="text-sm text-gray-600 mb-1">Av. Circunvalación Agustín Yáñez 2343</p>
+            <p class="text-sm text-gray-600 mb-1">Colonia Moderna</p>
+            <p class="text-sm text-gray-600 mb-1">Guadalajara, Jalisco</p>
+            <p class="text-sm text-gray-600">C.P. 44190</p>
+            
+            <div class="mt-4">
+              <a href="#" class="text-blue-600 hover:underline text-sm flex items-center">
+                <i class="fas fa-map-marker-alt mr-2"></i>
+                <span>Ver en el mapa</span>
+              </a>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-base font-medium text-gray-700 mb-3">Detalles de Contacto</h3>
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <i class="fas fa-phone text-gray-400 w-5"></i>
+                <span class="text-sm text-gray-600 ml-2">+52 33 1234 5678</span>
+              </div>
+              
+              <div class="flex items-center">
+                <i class="fas fa-envelope text-gray-400 w-5"></i>
+                <span class="text-sm text-gray-600 ml-2">contact@jalisco.courts.mx</span>
+              </div>
+              
+              <div class="flex items-center">
+                <i class="fas fa-globe text-gray-400 w-5"></i>
+                <span class="text-sm text-gray-600 ml-2">www.pjjalisco.gob.mx</span>
+              </div>
+              
+              <div class="flex items-center">
+                <i class="fas fa-clock text-gray-400 w-5"></i>
+                <span class="text-sm text-gray-600 ml-2">Lun-Vie: 9:00 - 15:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="border-t border-gray-200 mt-6 pt-6">
+          <h3 class="text-base font-medium text-gray-700 mb-3">Contactos de UNICEF y ODI</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-blue-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/UNICEF_logo.svg/1200px-UNICEF_logo.svg.png" alt="UNICEF Logo" class="h-6 bg-white p-1 rounded mr-2">
+                <h4 class="text-sm font-medium">Coordinador de UNICEF</h4>
+              </div>
+              <p class="text-sm font-medium">Analia Castaner</p>
+              <p class="text-xs text-gray-500 mb-2">Oficial de Protección Infantil</p>
+              <div class="text-xs text-gray-600">
+                <div class="flex items-center mb-1">
+                  <i class="fas fa-envelope w-4"></i>
+                  <span class="ml-1">acastaner@unicef.org</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-phone w-4"></i>
+                  <span class="ml-1">+52 55 9876 5432</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-blue-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <div class="h-6 w-6 bg-white rounded flex items-center justify-center text-blue-700 font-bold mr-2">ODI</div>
+                <h4 class="text-sm font-medium">Coordinador de ODI</h4>
+              </div>
+              <p class="text-sm font-medium">Javier Mendez</p>
+              <p class="text-xs text-gray-500 mb-2">Supervisor de Campo</p>
+              <div class="text-xs text-gray-600">
+                <div class="flex items-center mb-1">
+                  <i class="fas fa-envelope w-4"></i>
+                  <span class="ml-1">jmendez@odi.org</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-phone w-4"></i>
+                  <span class="ml-1">+52 55 4567 8901</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get parent window's app API
+      const appAPI = window.parent.appAPI;
+      const user = appAPI.getUserData();
+      const workflowSteps = appAPI.getWorkflowSteps();
+      const stateProgress = appAPI.getStateProgress();
+      
+      // Set court name
+      document.getElementById('courtName').textContent = user.courtName || 'State Court';
+      document.getElementById('courtTitle').textContent = user.courtName || 'State Court';
+      
+      // Find court progress
+      const courtProgress = stateProgress.find(state => state.state === user.state) || {
+        state: user.state,
+        currentStep: 2,
+        stepProgress: { 1: 100, 2: 40 },
+        overall: 25
+      };
+      
+      // Set current step information
+      const currentStep = workflowSteps[courtProgress.currentStep - 1];
+      document.getElementById('currentStep').textContent = currentStep.title;
+      document.getElementById('currentStepNumber').textContent = `Paso ${courtProgress.currentStep} de ${workflowSteps.length}`;
+      
+      // Set overall progress
+      document.getElementById('overallProgressBar').style.width = `${courtProgress.overall}%`;
+      document.getElementById('overallProgressText').textContent = `${courtProgress.overall}%`;
+      
+      // Update court status
+      const statusEl = document.getElementById('courtStatus');
+      
+      if (courtProgress.overall >= 95) {
+        statusEl.textContent = 'Completado';
+        statusEl.className = 'inline-flex px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 font-medium';
+      } else if (courtProgress.overall >= 50) {
+        statusEl.textContent = 'Avanzado';
+        statusEl.className = 'inline-flex px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 font-medium';
+      } else if (courtProgress.overall >= 25) {
+        statusEl.textContent = 'En Progreso';
+        statusEl.className = 'inline-flex px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 font-medium';
+      } else {
+        statusEl.textContent = 'Etapa Inicial';
+        statusEl.className = 'inline-flex px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 font-medium';
+      }
+      
+      // Populate steps progress
+      const stepsProgressEl = document.getElementById('stepsProgress');
+      
+      workflowSteps.forEach((step, index) => {
+        const stepId = index + 1;
+        const progress = courtProgress.stepProgress[stepId] || 0;
+        const isCompleted = progress === 100;
+        const isCurrent = stepId === courtProgress.currentStep;
+        const isLocked = stepId > courtProgress.currentStep;
+        
+        let statusClass = '';
+        let statusText = '';
+        
+        if (isCompleted) {
+          statusClass = 'bg-green-100 text-green-800';
+          statusText = 'Completado';
+        } else if (isCurrent) {
+          statusClass = 'bg-blue-100 text-blue-800';
+          statusText = 'En Progreso';
+        } else {
+          statusClass = 'bg-gray-100 text-gray-500';
+          statusText = 'Pendiente';
+        }
+        
+        const stepEl = document.createElement('div');
+        stepEl.className = 'flex items-center';
+        
+        stepEl.innerHTML = `
+          <div class="mr-3 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center ${isCompleted ? 'bg-green-500 text-white' : isLocked ? 'bg-gray-300' : 'bg-blue-500 text-white'}">
+            ${isCompleted ? '<i class="fas fa-check text-xs"></i>' : stepId}
+          </div>
+          <div class="flex-grow">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-sm font-medium">${step.title}</span>
+              <span class="text-xs ${statusClass} px-2 py-0.5 rounded-full">${statusText}</span>
+            </div>
+            <div class="w-full h-2 bg-gray-200 rounded-full">
+              <div class="h-2 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-blue-500'}" style="width: ${progress}%"></div>
+            </div>
+          </div>
+        `;
+        
+        stepsProgressEl.appendChild(stepEl);
+      });
+    });
+  </script>
+</body>
+</html> 

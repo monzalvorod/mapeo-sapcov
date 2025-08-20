@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAPCOV File Management System</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100 h-screen flex flex-col">
+  <header class="bg-blue-700 text-white p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="img/sapcov-logo.svg" alt="SAPCOV Logo" class="h-10">
+        <h1 class="text-2xl font-bold">SAPCOV File Management System</h1>
+      </div>
+      <div id="userInfo" class="hidden">
+        <div class="flex items-center space-x-3">
+          <span id="userName" class="font-medium"></span>
+          <button id="logoutBtn" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg transition">
+            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="bg-white border-b shadow-sm" id="mainNav">
+    <div class="container mx-auto">
+      <ul class="flex overflow-x-auto space-x-2 p-3" id="navTabs">
+        <!-- Navigation tabs will be populated dynamically based on user role -->
+      </ul>
+    </div>
+  </nav>
+
+  <main class="flex-grow overflow-hidden">
+    <iframe id="contentFrame" class="w-full h-full border-none" src="pages/login.html"></iframe>
+  </main>
+
+  <footer class="bg-gray-800 text-gray-300 py-3 text-center text-sm">
+    <div class="container mx-auto">
+      <p>© 2025 UNICEF & ODI Partnership. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html> 

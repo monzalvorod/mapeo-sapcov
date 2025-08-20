@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progreso Nacional - SAPCOV</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto py-6 px-4">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Progreso Nacional de Implementación SAPCOV</h1>
+        <p class="text-gray-600" id="adminInfo">Usuario Administrador</p>
+      </div>
+      
+      <div class="mt-4 md:mt-0 flex space-x-3">
+        <button class="px-4 py-2 bg-white text-gray-600 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-50 flex items-center">
+          <i class="fas fa-download mr-2"></i>
+          Exportar Reporte
+        </button>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 flex items-center">
+          <i class="fas fa-print mr-2"></i>
+          Imprimir
+        </button>
+      </div>
+    </div>
+    
+    <!-- Stats Overview Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="stat-card">
+        <h3 class="text-sm font-medium text-gray-500 mb-1">Promedio Nacional de Progreso</h3>
+        <div class="flex items-end justify-between">
+          <div class="flex items-baseline">
+            <span class="text-3xl font-bold text-blue-600" id="avgProgress">42</span>
+            <span class="text-lg ml-1">%</span>
+          </div>
+          <div class="flex flex-col items-end">
+            <span class="text-xs text-green-500 flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>
+              3.2% 
+            </span>
+            <span class="text-xs text-gray-500">desde el mes pasado</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <h3 class="text-sm font-medium text-gray-500 mb-1">Estados con SAPCOV Establecido</h3>
+        <div class="flex items-end justify-between">
+          <div class="flex items-baseline">
+            <span class="text-3xl font-bold text-green-600" id="completedStates">6</span>
+            <span class="text-lg ml-1">/ 32</span>
+          </div>
+          <div class="flex flex-col items-end">
+            <span class="text-xs text-green-500 flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>
+              2
+            </span>
+            <span class="text-xs text-gray-500">desde el trimestre pasado</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <h3 class="text-sm font-medium text-gray-500 mb-1">Estados en Progreso</h3>
+        <div class="flex items-end justify-between">
+          <div class="flex items-baseline">
+            <span class="text-3xl font-bold text-yellow-500" id="inProgressStates">24</span>
+            <span class="text-lg ml-1">estados</span>
+          </div>
+          <div class="flex flex-col items-end">
+            <span class="text-xs text-gray-500 flex items-center">
+              <i class="fas fa-minus mr-1"></i>
+              Sin cambios
+            </span>
+            <span class="text-xs text-gray-500">desde el mes pasado</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <h3 class="text-sm font-medium text-gray-500 mb-1">Estados No Iniciados</h3>
+        <div class="flex items-end justify-between">
+          <div class="flex items-baseline">
+            <span class="text-3xl font-bold text-gray-500" id="notStartedStates">2</span>
+            <span class="text-lg ml-1">estados</span>
+          </div>
+          <div class="flex flex-col items-end">
+            <span class="text-xs text-green-500 flex items-center">
+              <i class="fas fa-arrow-down mr-1"></i>
+              2
+            </span>
+            <span class="text-xs text-gray-500">desde el mes pasado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Visualization Tabs -->
+    <div class="bg-white rounded-card shadow-sm mb-6">
+      <div class="border-b border-gray-200">
+        <nav class="flex -mb-px">
+          <button id="mapTabBtn" class="tab-btn active py-4 px-6 border-b-2 border-blue-500 text-blue-600 font-medium">
+            Map View
+          </button>
+          <button id="chartTabBtn" class="tab-btn py-4 px-6 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium">
+            Chart View
+          </button>
+          <button id="tableTabBtn" class="tab-btn py-4 px-6 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium">
+            Table View
+          </button>
+        </nav>
+      </div>
+      
+      <!-- Map View (default) -->
+      <div id="mapView" class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-bold text-gray-800">Mapa de Progreso de Implementación</h2>
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center">
+              <span class="w-3 h-3 bg-green-500 rounded-full mr-1"></span>
+              <span class="text-xs text-gray-600">Completado</span>
+            </div>
+            <div class="flex items-center">
+              <span class="w-3 h-3 bg-blue-500 rounded-full mr-1"></span>
+              <span class="text-xs text-gray-600">Avanzado</span>
+            </div>
+            <div class="flex items-center">
+              <span class="w-3 h-3 bg-yellow-500 rounded-full mr-1"></span>
+              <span class="text-xs text-gray-600">En Progreso</span>
+            </div>
+            <div class="flex items-center">
+              <span class="w-3 h-3 bg-gray-300 rounded-full mr-1"></span>
+              <span class="text-xs text-gray-600">Inicial/No Iniciado</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="relative" style="height: 500px;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mapa_de_Mexico_con_nombres.svg/1200px-Mapa_de_Mexico_con_nombres.svg.png" alt="Mexico Map" class="w-full h-full object-contain opacity-50">
+          <div class="absolute inset-0 flex items-center justify-center text-gray-500">
+            <div class="text-center p-4 bg-white bg-opacity-80 rounded-lg">
+              <i class="fas fa-map-marked-alt text-4xl mb-2"></i>
+              <p>La visualización interactiva del mapa aparecerá aquí</p>
+              <p class="text-sm">Muestra el estado de progreso con codificación de colores en los estados</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Chart View (hidden by default) -->
+      <div id="chartView" class="p-6 hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Step-by-Step Progress Chart -->
+          <div>
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Progreso por Paso de Implementación</h2>
+            <div style="height: 400px;">
+              <canvas id="stepProgressChart"></canvas>
+            </div>
+          </div>
+          
+          <!-- Progress Distribution Chart -->
+          <div>
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Distribución del Progreso de Implementación</h2>
+            <div style="height: 400px;">
+              <canvas id="progressDistributionChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Table View (hidden by default) -->
+      <div id="tableView" class="p-6 hidden">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-bold text-gray-800">Estado de Implementación por Estado</h2>
+          <div class="relative">
+            <input type="text" id="stateSearch" placeholder="Buscar estados..." class="pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+          </div>
+        </div>
+        
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Estado
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Paso Actual
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Progreso
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Estado
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Archivos Subidos
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Última Actualización
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" id="statesTableBody">
+              <!-- Table rows will be populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Timeline Chart -->
+    <div class="bg-white rounded-card shadow-sm p-6">
+      <h2 class="text-lg font-bold text-gray-800 mb-4">Cronograma Nacional de Implementación</h2>
+      <div style="height: 300px;">
+        <canvas id="timelineChart"></canvas>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get parent window's app API
+      const appAPI = window.parent.appAPI;
+      const user = appAPI.getUserData();
+      const workflowSteps = appAPI.getWorkflowSteps();
+      const stateProgress = appAPI.getStateProgress();
+      
+      // Set admin info
+      document.getElementById('adminInfo').textContent = `${user.role === 'unicef_admin' ? 'UNICEF' : 'ODI'} Administrator`;
+      
+      // Calculate statistics
+      const completedThreshold = 95; // Consider a state completed if overall progress >= 95%
+      
+      // Count completed and in-progress states
+      const completedStates = stateProgress.filter(state => state.overall >= completedThreshold).length;
+      const notStartedStates = stateProgress.filter(state => state.overall < 5).length;
+      const inProgressStates = stateProgress.length - completedStates - notStartedStates;
+      
+      // Calculate average progress
+      const avgProgress = Math.round(stateProgress.reduce((sum, state) => sum + state.overall, 0) / stateProgress.length);
+      
+      // Update statistics in the UI
+      document.getElementById('avgProgress').textContent = avgProgress;
+      document.getElementById('completedStates').textContent = completedStates;
+      document.getElementById('inProgressStates').textContent = inProgressStates;
+      document.getElementById('notStartedStates').textContent = notStartedStates;
+      
+      // Tab navigation functionality
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const mapView = document.getElementById('mapView');
+      const chartView = document.getElementById('chartView');
+      const tableView = document.getElementById('tableView');
+      
+      document.getElementById('mapTabBtn').addEventListener('click', () => {
+        mapView.classList.remove('hidden');
+        chartView.classList.add('hidden');
+        tableView.classList.add('hidden');
+        updateActiveTab('mapTabBtn');
+      });
+      
+      document.getElementById('chartTabBtn').addEventListener('click', () => {
+        mapView.classList.add('hidden');
+        chartView.classList.remove('hidden');
+        tableView.classList.add('hidden');
+        updateActiveTab('chartTabBtn');
+      });
+      
+      document.getElementById('tableTabBtn').addEventListener('click', () => {
+        mapView.classList.add('hidden');
+        chartView.classList.add('hidden');
+        tableView.classList.remove('hidden');
+        updateActiveTab('tableTabBtn');
+        
+        // Initialize table if not already done
+        if (!document.getElementById('statesTableBody').hasChildNodes()) {
+          populateStatesTable();
+        }
+      });
+      
+      function updateActiveTab(activeTabId) {
+        tabButtons.forEach(btn => {
+          if (btn.id === activeTabId) {
+            btn.classList.add('active', 'border-blue-500', 'text-blue-600');
+            btn.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700');
+          } else {
+            btn.classList.remove('active', 'border-blue-500', 'text-blue-600');
+            btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700');
+          }
+        });
+      }
+      
+      // Populate states table
+      function populateStatesTable() {
+        const statesTableBody = document.getElementById('statesTableBody');
+        
+        // Sort states by progress (descending)
+        const sortedStates = [...stateProgress].sort((a, b) => b.overall - a.overall);
+        
+        sortedStates.forEach(state => {
+          const currentStep = workflowSteps[state.currentStep - 1];
+          const row = document.createElement('tr');
+          
+          let statusClass = '';
+          let statusText = '';
+          
+          if (state.overall >= 95) {
+            statusClass = 'bg-green-100 text-green-800';
+            statusText = 'Completado';
+          } else if (state.overall >= 50) {
+            statusClass = 'bg-blue-100 text-blue-800';
+            statusText = 'Avanzado';
+          } else if (state.overall >= 25) {
+            statusClass = 'bg-yellow-100 text-yellow-800';
+            statusText = 'En Progreso';
+          } else if (state.overall >= 5) {
+            statusClass = 'bg-gray-100 text-gray-800';
+            statusText = 'Etapa Inicial';
+          } else {
+            statusClass = 'bg-red-100 text-red-800';
+            statusText = 'No Iniciado';
+          }
+          
+          row.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">${state.state}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">${currentStep.title}</div>
+              <div class="text-xs text-gray-500">Paso ${state.currentStep} de 8</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="w-32 h-2 bg-gray-200 rounded-full mr-2">
+                  <div class="h-2 bg-blue-600 rounded-full" style="width: ${state.overall}%"></div>
+                </div>
+                <span class="text-sm font-medium">${state.overall}%</span>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                ${statusText}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              ${Math.floor(Math.random() * 20) + 5}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              ${new Date(Date.now() - Math.random() * 15 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <div class="flex space-x-2">
+                <button class="text-blue-600 hover:text-blue-800">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="text-green-600 hover:text-green-800">
+                  <i class="fas fa-file"></i>
+                </button>
+                <button class="text-gray-500 hover:text-gray-700">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+              </div>
+            </td>
+          `;
+          
+          statesTableBody.appendChild(row);
+        });
+        
+        // Search functionality for the states table
+        const stateSearch = document.getElementById('stateSearch');
+        if (stateSearch) {
+          stateSearch.addEventListener('input', event => {
+            const searchTerm = event.target.value.toLowerCase();
+            
+            document.querySelectorAll('#statesTableBody tr').forEach(row => {
+              const stateName = row.querySelector('td:first-child div').textContent.toLowerCase();
+              if (stateName.includes(searchTerm)) {
+                row.classList.remove('hidden');
+              } else {
+                row.classList.add('hidden');
+              }
+            });
+          });
+        }
+      }
+      
+      // Initialize all charts
+      initializeCharts();
+      
+      function initializeCharts() {
+        // Step Progress Chart
+        const stepProgressData = {
+          labels: workflowSteps.map(step => step.title),
+          datasets: [{
+            label: 'Average Completion',
+            data: workflowSteps.map((_, index) => {
+              // Calculate average progress for each step across all states
+              const stepId = index + 1;
+              return Math.round(stateProgress.reduce((sum, state) => sum + (state.stepProgress[stepId] || 0), 0) / stateProgress.length);
+            }),
+            backgroundColor: 'rgba(59, 130, 246, 0.5)',
+            borderColor: 'rgb(59, 130, 246)',
+            borderWidth: 1
+          }]
+        };
+        
+        new Chart(
+          document.getElementById('stepProgressChart'),
+          {
+            type: 'bar',
+            data: stepProgressData,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100,
+                  title: {
+                    display: true,
+                    text: 'Porcentaje de Completación'
+                  }
+                }
+              },
+              plugins: {
+                legend: {
+                  display: false
+                }
+              }
+            }
+          }
+        );
+        
+        // Progress Distribution Chart
+        const progressRanges = [
+          { range: 'Not Started (0-5%)', count: stateProgress.filter(s => s.overall < 5).length },
+          { range: 'Initial (5-25%)', count: stateProgress.filter(s => s.overall >= 5 && s.overall < 25).length },
+          { range: 'In Progress (25-50%)', count: stateProgress.filter(s => s.overall >= 25 && s.overall < 50).length },
+          { range: 'Advanced (50-95%)', count: stateProgress.filter(s => s.overall >= 50 && s.overall < 95).length },
+          { range: 'Completed (95-100%)', count: stateProgress.filter(s => s.overall >= 95).length }
+        ];
+        
+        const distributionData = {
+          labels: progressRanges.map(r => r.range),
+          datasets: [{
+            data: progressRanges.map(r => r.count),
+            backgroundColor: [
+              'rgba(107, 114, 128, 0.7)',  // gray
+              'rgba(251, 191, 36, 0.7)',   // yellow
+              'rgba(245, 158, 11, 0.7)',   // amber
+              'rgba(59, 130, 246, 0.7)',   // blue
+              'rgba(16, 185, 129, 0.7)'    // green
+            ],
+            borderWidth: 1
+          }]
+        };
+        
+        new Chart(
+          document.getElementById('progressDistributionChart'),
+          {
+            type: 'pie',
+            data: distributionData,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'right'
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      const index = context.dataIndex;
+                      return `${progressRanges[index].range}: ${progressRanges[index].count} estados`;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        );
+        
+        // Timeline Chart
+        // Generate fictional data for the last 12 months
+        const months = [];
+        const currentDate = new Date();
+        for (let i = 11; i >= 0; i--) {
+          const month = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+          months.push(month.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }));
+        }
+        
+        // Generate fictional progress data (increasing trend)
+        const progressData = [5, 8, 12, 15, 18, 21, 25, 28, 32, 36, 40, avgProgress];
+        
+        const timelineData = {
+          labels: months,
+          datasets: [{
+            label: 'Promedio Nacional de Progreso',
+            data: progressData,
+            borderColor: 'rgb(59, 130, 246)',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.3,
+            fill: true
+          }]
+        };
+        
+        new Chart(
+          document.getElementById('timelineChart'),
+          {
+            type: 'line',
+            data: timelineData,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100,
+                  title: {
+                    display: true,
+                    text: 'Progreso Promedio (%)'
+                  }
+                }
+              }
+            }
+          }
+        );
+      }
+    });
+  </script>
+</body>
+</html> 
